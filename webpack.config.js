@@ -5,7 +5,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
   context: path.join(__dirname, 'src'),
   entry: {
-    javascript: "./jsx/propersearchfield.js"
+    javascript: "./jsx/propersearch-field.js"
   },
   module: {
     loaders: [
@@ -37,11 +37,11 @@ module.exports = {
   output: {
     libraryTarget: "var",
     library: "ProperSearchField",
-    filename: "propersearchfield.js",
+    filename: "propersearch-field.js",
     path: __dirname + "/dist"
   },
   plugins: [
-    new ExtractTextPlugin('propersearchfield.css', {
+    new ExtractTextPlugin('propersearch-field.css', {
       allChunks: true
     }),
     new webpack.optimize.DedupePlugin(),
