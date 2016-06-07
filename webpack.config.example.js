@@ -47,7 +47,7 @@ module.exports = {
     path: path.join(__dirname, "/dist")
   },
   plugins: [
-    new ExtractTextPlugin('propersearch-field.css', {
+    new ExtractTextPlugin('propersearchfield.css', {
       allChunks: true
     }),
     new webpack.optimize.DedupePlugin(),
