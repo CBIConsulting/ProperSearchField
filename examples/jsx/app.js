@@ -1,5 +1,5 @@
 import React from 'react';
-import Search from "../../src/jsx/propersearchfield";
+import Search from "../../src/jsx/propersearch-field";
 
 function getDefaultProps() {
 	return {
