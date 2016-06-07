@@ -1,6 +1,6 @@
 {
   "name": "react-propersearch-field",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A react component that render a search field, allows the user to search. Made for [ProperSearch](https://github.com/CBIConsulting/ProperSearch)",
   "main": "lib/propersearch-field.js",
   "scripts": {
