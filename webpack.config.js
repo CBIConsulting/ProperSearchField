@@ -37,11 +37,11 @@ module.exports = {
   output: {
     libraryTarget: "var",
     library: "ProperSearchField",
-    filename: "propersearch-field.js",
+    filename: "propersearchfield.js",
     path: __dirname + "/dist"
   },
   plugins: [
-    new ExtractTextPlugin('propersearch-field.css', {
+    new ExtractTextPlugin('propersearchfield.css', {
       allChunks: true
     }),
     new webpack.optimize.DedupePlugin(),
