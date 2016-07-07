@@ -7,7 +7,6 @@ import {shallowEqualImmutable} from 'react-immutable-render-mixin';
 // For more info about this read ReadMe.md
 function getDefaultProps() {
 	return {
-		clearable: true,
 		defaultValue: '',
 		placeholder: 'Search...',
 		searchIcon: 'fa fa-search fa-fw',
