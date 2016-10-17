@@ -16,7 +16,8 @@ function getDefaultProps() {
 		throttle: 160, // milliseconds
 		sendEmpty: true,
 		minLength: 3,
-		autoComplete: 'off'
+		autoComplete: 'off',
+		uniqueId: null
 	}
 }
 
@@ -199,7 +200,8 @@ class SearchField extends React.Component {
 	}
 
 	render() {
-		let className = 'proper-search-field', uniqueId = _.uniqueId('search-'), clearBtn = null;
+		let className = 'proper-search-field', clearBtn = null;
+		let uniqueId;
 
 		if (this.props.className) {
 			className += ' '+this.props.className;
@@ -207,6 +209,8 @@ class SearchField extends React.Component {
 
 		if (this.props.uniqueId) {
 			uniqueId = this.props.uniqueId;
+		} else {
+			uniqueId = _.uniqueId('search-');
 		}
 
 		if (this.state.showClear) {

@@ -101,7 +101,6 @@ var ProperSearchField =
 	// For more info about this read ReadMe.md
 	function getDefaultProps() {
 		return {
-			clearable: true,
 			defaultValue: '',
 			placeholder: 'Search...',
 			searchIcon: 'fa fa-search fa-fw',
@@ -111,7 +110,8 @@ var ProperSearchField =
 			throttle: 160, // milliseconds
 			sendEmpty: true,
 			minLength: 3,
-			autoComplete: 'off'
+			autoComplete: 'off',
+			uniqueId: null
 		};
 	}
 
@@ -134,7 +134,7 @@ var ProperSearchField =
 		function SearchField(props) {
 			_classCallCheck(this, SearchField);
 
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SearchField).call(this, props));
+			var _this = _possibleConstructorReturn(this, (SearchField.__proto__ || Object.getPrototypeOf(SearchField)).call(this, props));
 
 			_this.state = {
 				showClear: false,
@@ -321,8 +321,8 @@ var ProperSearchField =
 			key: 'render',
 			value: function render() {
 				var className = 'proper-search-field',
-				    uniqueId = _underscore2['default'].uniqueId('search-'),
 				    clearBtn = null;
+				var uniqueId = void 0;
 
 				if (this.props.className) {
 					className += ' ' + this.props.className;
@@ -330,6 +330,8 @@ var ProperSearchField =
 
 				if (this.props.uniqueId) {
 					uniqueId = this.props.uniqueId;
+				} else {
+					uniqueId = _underscore2['default'].uniqueId('search-');
 				}
 
 				if (this.state.showClear) {
@@ -441,6 +443,7 @@ var ProperSearchField =
 	 * The dimensions of this `div` are what are passed as props to your component. The default style is
 	 * `{ width: '100%', height: '100%', padding: 0, border: 0 }` which will cause the `div` to fill its
 	 * parent in most cases. If you are using a flexbox layout you will want to change this default style.
+	 * @param {string} [options.className] Control the class name set on the wrapper `<div>`
 	 * @param {boolean} [options.elementResize=false] Set true to watch the wrapper `div` for changes in
 	 * size which are not a result of window resizing - e.g. changes to the flexbox and other layout.
 	 * @return {function}                   A higher-order component that can be
@@ -490,6 +493,8 @@ var ProperSearchField =
 	  var getWidth = _ref$getWidth === undefined ? defaultGetWidth : _ref$getWidth;
 	  var _ref$containerStyle = _ref.containerStyle;
 	  var containerStyle = _ref$containerStyle === undefined ? defaultContainerStyle : _ref$containerStyle;
+	  var _ref$className = _ref.className;
+	  var className = _ref$className === undefined ? null : _ref$className;
 	  var _ref$elementResize = _ref.elementResize;
 	  var elementResize = _ref$elementResize === undefined ? false : _ref$elementResize;
 
@@ -582,10 +587,17 @@ var ProperSearchField =
 	      }, {
 	        key: 'render',
 	        value: function render() {
+	          var _state = this.state;
+	          var containerWidth = _state.containerWidth;
+	          var containerHeight = _state.containerHeight;
+
+	          if (!containerWidth && !containerHeight) {
+	            console.warn('Wrapper div has no height or width, try overriding style with `containerStyle` option');
+	          }
 	          return React.createElement(
 	            'div',
-	            { style: containerStyle, ref: 'container' },
-	            (this.state.containerWidth || this.state.containerHeight) && React.createElement(ComposedComponent, _extends({}, this.state, this.props, {
+	            { className: className, style: containerStyle, ref: 'container' },
+	            (containerWidth || containerHeight) && React.createElement(ComposedComponent, _extends({}, this.state, this.props, {
 	              updateDimensions: this.updateDimensions,
 	              ref: 'wrappedInstance'
 	            }))
@@ -643,9 +655,11 @@ var ProperSearchField =
 	    }
 	    win.__resizeRAF__ = requestFrame(function () {
 	      var trigger = win.__resizeTrigger__
-	      trigger.__resizeListeners__.forEach(function (fn) {
-	        fn.call(trigger, e)
-	      })
+	      if(trigger !== undefined) {
+	        trigger.__resizeListeners__.forEach(function (fn) {
+	          fn.call(trigger, e)
+	        })
+	      }
 	    })
 	  }
 
@@ -664,7 +678,7 @@ var ProperSearchField =
 	        element.style.position = 'relative'
 	      }
 	      var obj = element.__resizeTrigger__ = document.createElement('object')
-	      obj.setAttribute('style', 'display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;')
+	      obj.setAttribute('style', 'display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1; opacity: 0;')
 	      obj.setAttribute('class', 'resize-sensor')
 	      obj.__resizeElement__ = element
 	      obj.onload = objectLoad
@@ -679,6 +693,19 @@ var ProperSearchField =
 	    }
 	  }
 	  element.__resizeListeners__.push(fn)
+	}
+
+	exports.unbind = function(element, fn){
+	  var attachEvent = document.attachEvent;
+	  element.__resizeListeners__.splice(element.__resizeListeners__.indexOf(fn), 1);
+	  if (!element.__resizeListeners__.length) {
+	    if (attachEvent) {
+	      element.detachEvent('onresize', resizeListener);
+	    } else {
+	      element.__resizeTrigger__.contentDocument.defaultView.removeEventListener('resize', resizeListener);
+	      element.__resizeTrigger__ = !element.removeChild(element.__resizeTrigger__);
+	    }
+	  }
 	}
 
 	module.exports = (typeof window === 'undefined') ? exports : exports.bind(window)
