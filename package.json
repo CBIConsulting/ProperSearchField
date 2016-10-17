@@ -1,6 +1,6 @@
 {
   "name": "react-propersearch-field",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A react component that render a search field, allows the user to search. Made for [ProperSearch](https://github.com/CBIConsulting/ProperSearch)",
   "main": "lib/propersearch-field.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "watch": "karma start --auto-watch --no-single-run karma.conf.js",
     "start": "webpack-dev-server --hot --inline --config webpack.config.example.js",
     "build": "babel src/jsx --out-dir lib && webpack && cp -rvf src/css/* css/",
-    "release": "webpack --config webpack.config.min.js",
+    "release": "npm run build && webpack --config webpack.config.min.js",
     "build-example": "webpack --config webpack.config.example.dist.js"
   },
   "repository": {
@@ -56,7 +56,8 @@
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.7.0",
-    "node-sass": "~3.4.2",
+    "node-sass": "^npm update
+    3.4.2",
     "phantomjs-prebuilt": "^2.1.7",
     "react-addons-test-utils": "^0.14.7",
     "sass-loader": "^3.2.0",
